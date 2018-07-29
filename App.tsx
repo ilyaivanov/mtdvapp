@@ -1,12 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
-import React, { Component } from "react";
+import * as React from "react";
 import { Platform, StyleSheet, Text, View } from "react-native";
 
 const instructions = Platform.select({
@@ -16,9 +8,7 @@ const instructions = Platform.select({
     "Shake or press menu button for dev menu"
 });
 
-type Props = {};
-
-export default class App extends Component<Props> {
+export default class App extends React.Component{
   render() {
     return (
       <View style={styles.container}>
