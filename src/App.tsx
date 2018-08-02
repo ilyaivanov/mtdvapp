@@ -2,19 +2,8 @@ import * as React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { createStackNavigator } from "react-navigation";
 import Domain from "./Domain";
-// @ts-ignore
-import domains from './domains.json';
+import domains from './domains';
 import SkillPage from "./SkillPage";
-
-export type Skill = {
-  title: string;
-  level: string;
-};
-
-export type Domain = {
-  title: string;
-  skills: Skill[];
-};
 
 const DomainCard = ({ navigate, domain }) => (
   <TouchableOpacity
@@ -66,14 +55,5 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24
-  },
-  engi: {
-    backgroundColor: "#FBDEC2"
-  },
-  communicationSkills: {
-    backgroundColor: "#F0F0F0"
-  },
-  universal: {
-    backgroundColor: "#E1E0FF"
   }
 });

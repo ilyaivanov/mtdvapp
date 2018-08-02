@@ -1,16 +1,6 @@
 import * as React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import { markCurrentSkill, toggleSkill } from "./utils";
-
-const junior = `Learn and apply 3 basic practices on a side project:
-- TDD
-- Pair Programming
-- Fast iterations (1 PR per day)`;
-
-const middle = "Learn and apply 3 basic practices on your work project";
-const senior = "Introduce your team to 3 basic practices";
-const lead = "Teach 3 practices to people not on your project";
-
 
 const Row = ({ title, description, onPress, style }) => <TouchableOpacity onPress={onPress} style={[style, {
   flexDirection: "row",
@@ -28,16 +18,19 @@ const Row = ({ title, description, onPress, style }) => <TouchableOpacity onPres
 
 export default class SkillPage extends React.Component {
   state = {
-    skills: [
-      { title: "Junior", description: junior, isDone: false },
-      { title: "Middle", description: middle, isDone: false },
-      { title: "Senior", description: senior, isDone: false },
-      { title: "Lead", description: lead, isDone: false }
-    ]
+    skills: undefined
   };
+
+  static getDerivedStateFromProps(props, state) {
+    //ugly state creation, extract this into redux state
+    if (!state.skills)
+      return { skills: props.navigation.state.params.skill.levels };
+    return null;
+  };
+
   toggleDone = skill => {
     const newSkills = toggleSkill(this.state.skills, skill);
-    console.log(newSkills, skill)
+    console.log(newSkills, skill);
     this.setState({ skills: newSkills });
   };
 
@@ -46,14 +39,14 @@ export default class SkillPage extends React.Component {
     return <View>
       <Text style={{ fontSize: 26, textAlign: "center", paddingTop: 10 }}>Craftsmanship</Text>
       <View style={{}}>
-        {marked .map(skill => <Row style={skill.isDone ? s.done : skill.isCurrent ? s.current : undefined}
-                                             onPress={() => this.toggleDone(skill)} key={skill.title}
-                                             title={skill.title} description={skill.description}/>)}
+        {marked.map(skill => <Row style={skill.isDone ? s.done : skill.isCurrent ? s.current : undefined}
+                                  onPress={() => this.toggleDone(skill)} key={skill.title}
+                                  title={skill.title} description={skill.description}/>)}
       </View>
     </View>;
   }
 }
-const s = {
+const s = StyleSheet.create({
   done: {
     backgroundColor: "#D1E6C9"
   },
@@ -61,5 +54,4 @@ const s = {
     backgroundColor: "#FFF0C1"
 
   }
-
-};
+});
