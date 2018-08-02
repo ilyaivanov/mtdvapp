@@ -1,42 +1,46 @@
 import * as React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { createStackNavigator } from "react-navigation";
-import Domain from "./Domain";
-import domains from './domains';
+import DomainPage from "./DomainPage";
 import SkillPage from "./SkillPage";
-
-const DomainCard = ({ navigate, domain }) => (
-  <TouchableOpacity
-    onPress={() => navigate("Domain", { domain: domain, color: domain.color, skills: domain.skills })}
-    style={[styles.center, { backgroundColor: domain.color }]}
-  >
-    <Text style={styles.title}>{domain.title}</Text>
-    <Text>{domain.skills.length} skills</Text>
-  </TouchableOpacity>
-);
+import { connect, Provider } from "react-redux";
+import { createStore } from "redux";
+import DomainCard from "./components/DomainCard";
+import { composeWithDevTools } from "redux-devtools-extension";
+import reducer from "./state/reducer";
+import { selectDomain } from "./state/actions";
+import { selectDomains } from "./state/selectors";
 
 class App extends React.Component<any> {
   render() {
     const { navigate } = this.props.navigation;
+    const onPress = (domain) => navigate("Domain", { domain: domain, color: domain.color, skills: domain.skills });
     return (
       <View style={styles.container}>
-        {domains.map(d => <DomainCard key={d.title} navigate={navigate} domain={d} />)}
+        {this.props.domains.map(d => (
+          <DomainCard key={d.title} domain={d} onPress={() => {
+            onPress(d);
+            this.props.selectDomain(d);
+          }}/>
+        ))}
       </View>
     );
   }
 }
 
-export default createStackNavigator({
+const AppConnected = connect(selectDomains, { selectDomain })(App);
+
+const Stack = createStackNavigator({
   A: {
-    screen: App,
+    screen: AppConnected,
     navigationOptions: ({ navigation }) => ({
       title: "Achievements"
     })
   },
   Domain: {
-    screen: Domain,
+    screen: DomainPage,
     navigationOptions: ({ navigation }) => ({
-      title: navigation.state.params.domain.title,
+      title: navigation.state.params.domain.title
     })
   },
   SkillPage: {
@@ -44,16 +48,16 @@ export default createStackNavigator({
   }
 });
 
+const store = createStore(reducer, composeWithDevTools());
+
+export default () => (
+  <Provider store={store}>
+    <Stack/>
+  </Provider>
+);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1
-  },
-  center: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  title: {
-    fontSize: 24
   }
 });

@@ -1,3 +1,5 @@
+import { Domain } from "../types";
+
 const createLevels = () => [
   {
     title: "Junior",
@@ -21,35 +23,37 @@ const createLevels = () => [
   }
 ];
 
-export default [
+const result: Domain[] = [
   {
+    id: "1",
     title: "Engineering",
     skills: [
-      {
-        title: "Craftsmanship",
-        levels: createLevels()
-      },
-      { title: "Estimations", levels: createLevels() },
-      { title: "Open Source", levels: createLevels() }
+      { id: "1", title: "Craftsmanship", levels: createLevels() },
+      { id: "2", title: "Estimations", levels: createLevels() },
+      { id: "3", title: "Open Source", levels: createLevels() }
     ],
     color: "#FBDEC2"
   },
   {
+    id: "2",
     title: "Career & Business",
     skills: [
-      { title: "Craftsmanship", level: "junior" },
-      { title: "Estimations", level: "middle" },
-      { title: "Open Source", level: "lead" }
+      { id: "4", title: "Craftsmanship", levels: createLevels() },
+      { id: "5", title: "Estimations", levels: createLevels() },
+      { id: "6", title: "Open Source", levels: createLevels() }
     ],
     color: "#F0F0F0"
   },
   {
+    id: "3",
     title: "Universal",
     skills: [
-      { title: "Craftsmanship", level: "junior" },
-      { title: "Estimations", level: "middle" },
-      { title: "Open Source", level: "lead" }
+      { id: "7", title: "Craftsmanship", levels: createLevels() },
+      { id: "8", title: "Estimations", levels: createLevels() },
+      { id: "9", title: "Open Source", levels: createLevels() }
     ],
     color: "#E1E0FF"
   }
 ];
+
+export default result;

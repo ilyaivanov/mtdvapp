@@ -1,6 +1,7 @@
 import * as React from "react";
-import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import { Text, TouchableOpacity, View, StyleSheet, Button } from "react-native";
 import { markCurrentSkill, toggleSkill } from "./utils";
+import { connect } from "react-redux";
 
 const Row = ({ title, description, onPress, style }) => <TouchableOpacity onPress={onPress} style={[style, {
   flexDirection: "row",
@@ -16,7 +17,7 @@ const Row = ({ title, description, onPress, style }) => <TouchableOpacity onPres
   </View>
 </TouchableOpacity>;
 
-export default class SkillPage extends React.Component {
+ class SkillPage extends React.Component {
   state = {
     skills: undefined
   };
@@ -46,6 +47,8 @@ export default class SkillPage extends React.Component {
     </View>;
   }
 }
+
+export default SkillPage;
 const s = StyleSheet.create({
   done: {
     backgroundColor: "#D1E6C9"
