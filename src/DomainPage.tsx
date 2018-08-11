@@ -1,11 +1,11 @@
 import * as React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { selectLevel } from "./utils";
+import { View } from "react-native";
 import { connect } from "react-redux";
 import { selectSelectedDomain } from "./state/selectors";
 import { NavigationScreenProp, NavigationState } from "react-navigation";
 import { Domain, Skill } from "./types";
 import { selectSkill } from "./state/actions";
+import SkillCard from "./components/SkillCard";
 
 interface Props {
   selectSkill: (skill: Skill) => void;
@@ -20,8 +20,7 @@ class DomainPage extends React.Component<Props> {
   };
 
   render() {
-    const { navigation, selectedDomain } = this.props;
-    const skills = selectedDomain.skills;
+    const { selectedDomain: { skills } } = this.props;
 
     return (
       <View>
@@ -32,20 +31,6 @@ class DomainPage extends React.Component<Props> {
     );
   }
 }
-
-const SkillCard = ({ skill, onPress }: { skill, onPress: () => void }) => <TouchableOpacity
-  onPress={onPress}
-  style={[s.container, { backgroundColor: "white" }]}>
-  <Text style={{ textAlign: "center", fontSize: 24, paddingBottom: 10 }}>{skill.title}</Text>
-  <Text>Current level: <Text style={{ fontWeight: "bold" }}>{selectLevel(skill.levels)}</Text></Text>
-</TouchableOpacity>;
-
-const s = StyleSheet.create({
-  container: {
-    margin: 10,
-    padding: 5
-  }
-});
 
 const mapState = (state) => ({ selectedDomain: selectSelectedDomain(state) });
 

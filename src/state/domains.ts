@@ -4,7 +4,7 @@ const createLevels = (skillId: string) => [
   {
     id: skillId + "1",
     title: "Junior",
-    description: `Learn and apply 34 basic practices on a side project:
+    description: `Learn and apply 3 basic practices on a side project:
 - TDD
 - Pair Programming
 - Fast iterations (1 PR per day)`
