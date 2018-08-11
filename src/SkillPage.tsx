@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { markCurrentSkill } from "./utils";
 import { connect } from "react-redux";
 import { selectSelectedSkill } from "./state/selectors";
-import { Skill } from "./types";
+import { Level, Skill } from "./types";
 import { toggleDone } from "./state/actions";
 
 const Row = ({ title, description, onPress, style }) => (
@@ -37,40 +37,19 @@ const Row = ({ title, description, onPress, style }) => (
 
 interface Props {
   skill: Skill;
-  // toggleDone: (levelId: string) => void;
+  levels: Level[];
+  toggleDone: (levelId: string) => void;
 }
-class SkillPage extends React.Component<Props> {
-  // state = {
-  //   skills: undefined,
-  //   skill: undefined
-  // };
-  //
-  // static getDerivedStateFromProps(props, state) {
-  //   //ugly state creation, extract this into redux state
-  //   if (!state.skill)
-  //     return { skill: props.skill };
-  //   return null;
-  // };
-  //
-  // toggleDone = level => {
-  //   const newLevels = toggleSkill(this.state.skill.levels, level);
-  //   const newSkill = {
-  //     ...this.state.skill,
-  //     levels: newLevels
-  //   };
-  //   console.log(newSkill, level);
-  //   this.setState({ skill: newSkill });
-  // };
 
+class SkillPage extends React.Component<Props> {
   render() {
-    const marked = markCurrentSkill(this.props.skill.levels);
     return (
       <View>
         <Text style={{ fontSize: 26, textAlign: "center", paddingTop: 10 }}>
           {this.props.skill.title}
         </Text>
         <View>
-          {marked.map(level => (
+          {this.props.levels.map(level => (
             <Row
               style={
                 level.isDone ? s.done : level.isCurrent ? s.current : undefined
@@ -87,14 +66,19 @@ class SkillPage extends React.Component<Props> {
   }
 }
 
-const mapState = state => ({
-  skill: selectSelectedSkill(state)
-});
+const mapState = state => {
+  const skill = selectSelectedSkill(state);
+  return {
+    skill,
+    levels: markCurrentSkill(skill.levels)
+  };
+};
 
 export default connect(
   mapState,
   { toggleDone }
 )(SkillPage);
+
 const s = StyleSheet.create({
   done: {
     backgroundColor: "#D1E6C9"
