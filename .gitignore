@@ -1,6 +1,12 @@
+# Jest
+.jest
+
 # OSX
 #
 .DS_Store
+
+# VS Code
+.vscode
 
 # Xcode
 #
