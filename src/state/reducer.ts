@@ -1,4 +1,4 @@
-import domains from "./domains";
+import domains from "./data";
 import { selectSelectedSkill } from "./selectors";
 import { cloneDeep } from "lodash";
 

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View } from "react-native";
+import { ScrollView } from "react-native";
 import { connect } from "react-redux";
 import { selectSelectedDomain } from "./state/selectors";
 import { NavigationScreenProp, NavigationState } from "react-navigation";
@@ -23,11 +23,11 @@ class DomainPage extends React.Component<Props> {
     const { selectedDomain: { skills } } = this.props;
 
     return (
-      <View>
+      <ScrollView>
         {
           skills.map(skill => <SkillCard onPress={() => this.onPress(skill)} key={skill.title} skill={skill}/>)
         }
-      </View>
+      </ScrollView>
     );
   }
 }

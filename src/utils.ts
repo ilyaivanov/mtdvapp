@@ -1,4 +1,5 @@
 import { Level } from "./types";
+import { seniorityTitles } from "./state/data";
 
 export const markCurrentSkill = (skills: Level[]) => {
   const firstUndoneSkill = skills.find(s => !s.isDone);
@@ -11,6 +12,6 @@ export const markCurrentSkill = (skills: Level[]) => {
 export const selectLevel = (levels: Level[]) => {
   const marked = markCurrentSkill(levels);
   const currentIndex = marked.findIndex(s => s.isCurrent);
-  if (currentIndex > 0) return levels[currentIndex].title;
-  else return "Intern";
+  if (currentIndex > 0) return levels[currentIndex - 1].title;
+  else return seniorityTitles[0];
 };
