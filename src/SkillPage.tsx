@@ -1,7 +1,9 @@
 import * as React from "react";
-import { Text, TouchableOpacity, View, StyleSheet, Button } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { markCurrentSkill, toggleSkill } from "./utils";
 import { connect } from "react-redux";
+import { selectSelectedSkill } from "./state/selectors";
+import { Skill } from "./types";
 
 const Row = ({ title, description, onPress, style }) => <TouchableOpacity onPress={onPress} style={[style, {
   flexDirection: "row",
@@ -17,28 +19,41 @@ const Row = ({ title, description, onPress, style }) => <TouchableOpacity onPres
   </View>
 </TouchableOpacity>;
 
- class SkillPage extends React.Component {
+interface Props {
+  skill: Skill
+}
+
+interface State {
+  skill?: Skill
+}
+
+class SkillPage extends React.Component<Props, State> {
   state = {
-    skills: undefined
+    skills: undefined,
+    skill: undefined
   };
 
   static getDerivedStateFromProps(props, state) {
     //ugly state creation, extract this into redux state
-    if (!state.skills)
-      return { skills: props.navigation.state.params.skill.levels };
+    if (!state.skill)
+      return { skill: props.skill };
     return null;
   };
 
-  toggleDone = skill => {
-    const newSkills = toggleSkill(this.state.skills, skill);
-    console.log(newSkills, skill);
-    this.setState({ skills: newSkills });
+  toggleDone = level => {
+    const newLevels = toggleSkill(this.state.skill.levels, level);
+    const newSkill = {
+      ...this.state.skill,
+      levels: newLevels
+    };
+    console.log(newSkill, level);
+    this.setState({ skill: newSkill });
   };
 
   render() {
-    const marked = markCurrentSkill(this.state.skills);
+    const marked = markCurrentSkill(this.state.skill.levels);
     return <View>
-      <Text style={{ fontSize: 26, textAlign: "center", paddingTop: 10 }}>Craftsmanship</Text>
+      <Text style={{ fontSize: 26, textAlign: "center", paddingTop: 10 }}>{this.state.skill.title}</Text>
       <View style={{}}>
         {marked.map(skill => <Row style={skill.isDone ? s.done : skill.isCurrent ? s.current : undefined}
                                   onPress={() => this.toggleDone(skill)} key={skill.title}
@@ -48,7 +63,11 @@ const Row = ({ title, description, onPress, style }) => <TouchableOpacity onPres
   }
 }
 
-export default SkillPage;
+const mapState = (state) => ({
+  skill: selectSelectedSkill(state)
+});
+
+export default connect(mapState)(SkillPage);
 const s = StyleSheet.create({
   done: {
     backgroundColor: "#D1E6C9"

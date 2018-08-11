@@ -27,8 +27,10 @@ class App extends React.Component<any> {
     );
   }
 }
-
-const AppConnected = connect(selectDomains, { selectDomain })(App);
+const mapState = state => ({
+  domains: selectDomains(state)
+});
+const AppConnected = connect(mapState, { selectDomain })(App);
 
 const Stack = createStackNavigator({
   A: {
