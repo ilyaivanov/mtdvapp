@@ -9,3 +9,8 @@ export const selectSkill = (skill: Skill) => ({
   type: "SELECT_SKILL",
   payload: skill.id
 });
+
+export const toggleDone = (levelId: string) => ({
+  type: "TOGGLE_LEVEL",
+  payload: levelId
+});
